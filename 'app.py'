@@ -1,0 +1,21 @@
+import streamlit as st
+
+st.title("🌱 SMART SOIL ANALYZER")
+st.header("Real-time Dashboard")
+
+# Sensor data
+moisture = 65
+ph = 6.8
+temp = 25.5
+
+col1, col2, col3 = st.columns(3)
+col1.metric("💧 Moisture", f"{moisture}%", "2%")
+col2.metric("🧪 pH", f"{ph}", "-0.1")
+col3.metric("🌡️ Temperature", f"{temp}°C", "1°C")
+
+if moisture < 30:
+    st.error("🚨 WATER IMMEDIATELY!")
+else:
+    st.success("✅ Perfect Growing Conditions!")
+
+st.balloons()
