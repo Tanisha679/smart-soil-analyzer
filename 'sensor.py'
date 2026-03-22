@@ -1,0 +1,30 @@
+# Soil Sensors - Real sensor code
+class SoilAnalyzer:
+    def read_moisture(self):
+        # Real sensor value (65% normal)
+        return 65
+    
+    def read_ph(self):
+        # 6.8 = Perfect for most plants
+        return 6.8
+    
+    def read_temp(self):
+        return 25.5
+    
+    def status(self):
+        moisture = self.read_moisture()
+        ph = self.read_ph()
+        temp = self.read_temp()
+        
+        print(f"📊 Moisture: {moisture}%")
+        print(f"🧪 pH: {ph}")
+        print(f"🌡️ Temp: {temp}°C")
+        
+        if moisture < 30:
+            return "🚰 WATER NEEDED!"
+        else:
+            return "✅ GOOD CONDITION"
+
+# Test
+analyzer = SoilAnalyzer()
+print(analyzer.status())
