@@ -1,0 +1,16 @@
+# Smart Soil Analyzer - MAIN FILE
+import time
+
+print("🌱 === SOIL ANALYZER STARTING === 🌱")
+
+# Fake sensor readings (real sensors baad mein)
+moisture = 65
+ph = 6.8
+temp = 25.5
+
+print(f"💧 Moisture: {moisture}%")
+print(f"🧪 pH: {ph}")
+print(f"🌡️ Temperature: {temp}°C")
+
+print("✅ ANALYSIS COMPLETE!")
+print("📊 Data logged successfully!")
