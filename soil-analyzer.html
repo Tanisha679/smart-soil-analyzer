@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Soil Health Analyzer - मिट्टी स्वास्थ्य विश्लेषक</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            color: white;
+            text-align: center;
+            padding: 30px;
+        }
+
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+
+        .header p {
+            font-size: 1.2em;
+            opacity: 0.9;
+        }
+
+        .main-content {
+            padding: 40px;
+        }
+
+        .input-section {
+            background: #f8f9ff;
+            padding: 30px;
+            border-radius: 15px;
+            margin-bottom: 30px;
+            border: 2px solid #e1e8ff;
+        }
+
+        .input-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #333;
+            font-size: 1.1em;
+        }
+
+        input[type="range"] {
+            width: 100%;
+            height: 8px;
+            border-radius: 5px;
+            background: #ddd;
+            outline: none;
+            -webkit-appearance: none;
+        }
+
+        input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 25px;
+            height: 25px;
+            border-radius: 50%;
+            background: #4facfe;
+            cursor: pointer;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+        }
+
+        .range-value {
+            font-size: 1.3em;
+            font-weight: bold;
+            color: #4facfe;
+            margin-top: 5px;
+        }
+
+        .analyze-btn {
+            width: 100%;
+            padding: 18px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-size: 1.3em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .analyze-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(102, 126, 234, 0.4);
+        }
+
+        .results {
+            display: none;
+            animation: slideIn 0.5s ease-out;
+        }
+
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .deficiency-section {
+            background: #fff3cd;
+            border: 2px solid #ffeaa7;
+            border-radius: 12px;
+            padding: 25px;
+            margin-bottom: 25px;
+        }
+
+        .crop-suggestions {
+            background: #d1f2eb;
+            border: 2px solid #a8e6cf;
+            border-radius: 12px;
+            padding: 25px;
+        }
+
+        .deficiency-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+            padding: 12px;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        .deficiency-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            margin-right: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5em;
+            color: white;
+        }
+
+        .nutrient-low { background: #ff6b6b; }
+        .nutrient-medium { background: #ffd93d; }
+        .nutrient-high { background: #51cf66; }
+
+        .crop-card {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 15px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            border-left: 5px solid #00b894;
+        }
+
+        .crop-name {
+            font-size: 1.4em;
+            font-weight: bold;
+            color: #2d3436;
+            margin-bottom: 8px;
+        }
+
+        .crop-benefits {
+            color: #636e72;
+            line-height: 1.5;
+        }
+
+        @media (max-width: 768px) {
+            .header h1 { font-size: 2em; }
+            .main-content { padding: 20px; }
+            .input-section { padding: 20px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🌱 मिट्टी स्वास्थ्य विश्लेषक</h1>
+            <p>अपनी मिट्टी की जांच करें और सबसे अच्छी फसल चुनें</p>
+        </div>
+
+        <div class="main-content">
+            <div class="input-section">
+                <h2 style="margin-bottom: 25px; color: #333; text-align: center;">मिट्टी के पोषक तत्वों की मात्रा दर्ज करें (0-100%)</h2>
+                
+                <div class="input-group">
+                    <label>नमी (Moisture) 💧</label>
+                    <input type="range" id="moisture" min="0" max="100" value="50">
+                    <div class="range-value" id="moistureValue">50%</div>
+                </div>
+
+                <div class="input-group">
+                    <label>नाइट्रोजन (Nitrogen) 🌾</label>
+                    <input type="range" id="nitrogen" min="0" max="100" value="50">
+                    <div class="range-value" id="nitrogenValue">50%</div>
+                </div>
+
+                <div class="input-group">
+                    <label>फॉस्फोरस (Phosphorus) 🧬</label>
+                    <input type="range" id="phosphorus" min="0" max="100" value="50">
+                    <div class="range-value" id="phosphorusValue">50%</div>
+                </div>
+
+                <div class="input-group">
+                    <label>पोटैशियम (Potassium) 🥔</label>
+                    <input type="range" id="potassium" min="0" max="100" value="50">
+                    <div class="range-value" id="potassiumValue">50%</div>
+                </div>
+
+                <div class="input-group">
+                    <label>कैल्शियम (Calcium) 🦴</label>
+                    <input type="range" id="calcium" min="0" max="100" value="50">
+                    <div class="range-value" id="calciumValue">50%</div>
+                </div>
+
+                <div class="input-group">
+                    <label>सल्फर (Sulphur) 🔥</label>
+                    <input type="range" id="sulphur" min="0" max="100" value="50">
+                    <div class="range-value" id="sulphurValue">50%</div>
+                </div>
+
+                <button class="analyze-btn" onclick="analyzeSoil()">🚀 मिट्टी का विश्लेषण करें</button>
+            </div>
+
+            <div class="results" id="results">
+                <div class="deficiency-section">
+                    <h3 style="color: #e17055; margin-bottom: 20px;">🔍 मिट्टी में कमी वाले पोषक तत्व</h3>
+                    <div id="deficiencies"></div>
+                </div>
+
+                <div class="crop-suggestions">
+                    <h3 style="color: #00b894; margin-bottom: 20px;">🌾 अनुशंसित फसलें</h3>
+                    <div id="crops"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Range sliders update
+        const sliders = ['moisture', 'nitrogen', 'phosphorus', 'potassium', 'calcium', 'sulphur'];
+        sliders.forEach(slider => {
+            const sliderEl = document.getElementById(slider);
+            const valueEl = document.getElementById(slider + 'Value');
+            
+            sliderEl.addEventListener('input', () => {
+                valueEl.textContent = sliderEl.value + '%';
+            });
+        });
+
+        // Crop recommendations database
+        const cropDatabase = {
+            lowMoisture: [
+                { name: 'बाजरा (Pearl Millet)', benefits: 'सूखा सहनशील, कम पानी में अच्छी पैदावार' },
+                { name: 'ज्वार (Sorghum)', benefits: 'बहुत कम पानी में उगती है, पशु चारा के लिए उत्तम' }
+            ],
+            lowNitrogen: [
+                { name: 'मूंगफली (Groundnut)', benefits: 'नाइट्रोजन फिक्सिंग, कम नाइट्रोजन वाली मिट्टी के लिए' },
+                { name: 'चना (Chickpea)', benefits: 'नाइट्रोजन फिक्सिंग दाल फसल' }
+            ],
+            lowPhosphorus: [
+                { name: 'तिल (Sesame)', benefits: 'कम फॉस्फोरस में अच्छी पैदावार' },
+                { name: 'सरसों (Mustard)', benefits: 'तेल फसल, कम फॉस्फोरस सहनशील' }
+            ],
+            lowPotassium: [
+                { name: 'मक्का (Maize)', benefits: 'मध्यम पोटैशियम में अच्छी पैदावार' },
+                { name: 'अरहर (Pigeon Pea)', benefits: 'दाल फसल, कम पोटैशियम सहनशील' }
+            ],
+            lowCalcium: [
+                { name: 'उड़द (Black Gram)', benefits: 'कम कैल्शियम वाली मिट्टी के लिए उपयुक्त' },
+                { name: 'मटर (Pea)', benefits: 'शीतकालीन दाल फसल' }
+            ],
+            lowSulphur: [
+                { name: 'लहसुन (Garlic)', benefits: 'सल्फर पसंद करने वाली फसल' },
+                { name: 'प्याज (Onion)', benefits: 'सल्फर की कम मात्रा में भी अच्छी पैदावार' }
+            ]
+        };
+
+        function analyzeSoil() {
+            const values = {};
+            sliders.forEach(slider => {
+                values[slider] = parseInt(document.getElementById(slider).value);
+            });
+
+            const deficiencies = [];
+            const recommendations = [];
+
+            // Check deficiencies (threshold < 40%)
+            if (values.moisture < 40) {
+                deficiencies.push({ name: 'नमी (Moisture)', value: values.moisture, icon: '💧' });
+                recommendations.push(...cropDatabase.lowMoisture);
+            }
+            if (values.nitrogen < 40) {
+                deficiencies.push({ name: 'नाइट्रोजन (Nitrogen)', value: values.nitrogen, icon: '🌾' });
+                recommendations.push(...cropDatabase.lowNitrogen);
+            }
+            if (values.phosphorus < 40) {
+                deficiencies.push({ name: 'फॉस्फोरस (Phosphorus)', value: values.phosphorus, icon: '🧬' });
+                recommendations.push(...cropDatabase.lowPhosphorus);
+            }
+            if (values.potassium < 40) {
+                deficiencies.push({ name: 'पोटैशियम (Potassium)', value: values.potassium, icon: '🥔' });
+                recommendations.push(...cropDatabase.lowPotassium);
+            }
+            if (values.calcium < 40) {
+                deficiencies.push({ name: 'कैल्शियम (Calcium)', value: values.calcium, icon: '🦴' });
+                recommendations.push(...cropDatabase.lowCalcium);
+            }
+            if (values.sulphur < 40) {
+                deficiencies.push({ name: 'सल्फर (Sulphur)', value: values.sulphur, icon: '🔥' });
+                recommendations.push(...cropDatabase.lowSulphur);
+            }
+
+            displayResults(deficiencies, recommendations);
+        }
+
+        function displayResults(deficiencies, recommendations) {
+            const resultsDiv = document.getElementById('results');
+            const deficienciesDiv = document.getElementById('deficiencies');
+            const cropsDiv = document.getElementById('crops');
+
+            if (deficiencies.length === 0) {
+                deficienciesDiv.innerHTML = '<p style="text-align: center; color: #00b894; font-size: 1.2em; font-weight: bold;">✅ आपकी मिट्टी पूरी तरह स्वस्थ है! सभी फसलें उगाई जा सकती हैं।</p>';
+            } else {
+                deficienciesDiv.innerHTML = deficiencies.map(def => `
+                    <div class="deficiency-item">
+                        <div class="deficiency-icon nutrient-low">${def.icon}</div>
+                        <div>
+                            <strong>${def.name}</strong><br>
+                            <span style="color: #e17055;">${def.value}% - कमी है</span>
+                        </div>
+                    </div>
+                `).join('');
+            }
+
+            // Show unique crop recommendations
+            const uniqueCrops = [...new Set(recommendations.map(c => JSON.stringify(c)))].map(JSON.parse);
+            cropsDiv.innerHTML = uniqueCrops.slice(0, 4).map(crop => `
+                <div class="crop-card">
+                    <div class="crop-name">${crop.name}</div>
+                    <div class="crop-benefits">${crop.benefits}</div>
+                </div>
+            `).join('');
+
+            if (uniqueCrops.length === 0) {
+                cropsDiv.innerHTML = '<p style="text-align: center; color: #00b894; font-size: 1.2em;">सभी प्रकार की फसलें उगाई जा सकती हैं 🌟</p>';
+            }
+
+            resultsDiv.style.display = 'block';
+            resultsDiv.scrollIntoView({ behavior: 'smooth' });
+        }
+    </script>
+</body>
+</html>
