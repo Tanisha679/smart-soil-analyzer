@@ -1,0 +1,5 @@
+print("Soil Analyzer Ready!")
+
+git add .
+git commit -m "first"
+git push
