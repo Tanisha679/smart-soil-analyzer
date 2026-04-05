@@ -2,32 +2,110 @@
 <html>
 <head>
     <title>🌱 Smart Soil Analyzer</title>
+
+    <!-- Chart.js CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
     <style>
-        body { font-family: Arial; text-align: center; padding: 50px; background: #e8f5e8; }
-        .metric { background: white; margin: 20px; padding: 20px; border-radius: 10px; box-shadow: 0 4px 8px rgba(0,0,0,0.1); }
+        body { 
+            font-family: Arial; 
+            text-align: center; 
+            padding: 50px; 
+            background: #e8f5e8; 
+        }
+
+        .metric { 
+            background: white; 
+            margin: 20px; 
+            padding: 20px; 
+            border-radius: 10px; 
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1); 
+        }
+
         h1 { color: #2d5a2d; }
+
+        canvas {
+            max-width: 300px;
+            margin: auto;
+        }
     </style>
 </head>
+
 <body>
+
     <h1>🌱 Smart Soil Analyzer</h1>
     <p>✅ Made by Tanisha</p>
-    
+
+    <!-- Moisture -->
     <div class="metric">
-        <h2>💧 Moisture</h2>
+        <h2>💧 Moisture Level</h2>
         <h1>65%</h1>
+        <canvas id="moistureChart"></canvas>
     </div>
-    
+
+    <!-- pH -->
     <div class="metric">
-        <h2>🧪 pH</h2>  
+        <h2>🧪 Soil pH Level</h2>  
         <h1>6.8</h1>
+        <canvas id="phChart"></canvas>
     </div>
-    
+
+    <!-- Temperature -->
     <div class="metric">
         <h2>🌡️ Temperature</h2>
         <h1>25.5°C</h1>
+        <canvas id="tempChart"></canvas>
     </div>
-    
-    <p><a href="https://github.com/Tanisha679/smart-soil-analyzer">View Code</a></p>
+
+    <p>
+        <a href="https://github.com/Tanisha679/smart-soil-analyzer">
+            View Code on GitHub
+        </a>
+    </p>
+
+    <script>
+        // Moisture Chart
+        new Chart(document.getElementById("moistureChart"), {
+            type: 'line',
+            data: {
+                labels: ["Mon", "Tue", "Wed", "Thu", "Fri"],
+                datasets: [{
+                    label: "Moisture %",
+                    data: [60, 62, 64, 65, 65],
+                    borderColor: "blue",
+                    fill: false
+                }]
+            }
+        });
+
+        // pH Chart
+        new Chart(document.getElementById("phChart"), {
+            type: 'line',
+            data: {
+                labels: ["Mon", "Tue", "Wed", "Thu", "Fri"],
+                datasets: [{
+                    label: "pH Level",
+                    data: [6.5, 6.6, 6.7, 6.8, 6.8],
+                    borderColor: "green",
+                    fill: false
+                }]
+            }
+        });
+
+        // Temperature Chart
+        new Chart(document.getElementById("tempChart"), {
+            type: 'line',
+            data: {
+                labels: ["Mon", "Tue", "Wed", "Thu", "Fri"],
+                datasets: [{
+                    label: "Temperature °C",
+                    data: [24, 25, 25.5, 26, 25.5],
+                    borderColor: "red",
+                    fill: false
+                }]
+            }
+        });
+    </script>
+
 </body>
 </html>
-
