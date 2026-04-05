@@ -28,6 +28,12 @@
             max-width: 300px;
             margin: auto;
         }
+
+        select {
+            padding: 10px;
+            font-size: 16px;
+            border-radius: 8px;
+        }
     </style>
 </head>
 
@@ -35,6 +41,20 @@
 
     <h1>🌱 Smart Soil Analyzer</h1>
     <p>✅ Made by Tanisha</p>
+
+    <!-- REGION SELECTOR -->
+    <div class="metric">
+        <h2>📍 Select Region</h2>
+        <select id="regionSelect" onchange="updateRegion()">
+            <option value="">-- Choose Region --</option>
+            <option value="North India">North India</option>
+            <option value="South India">South India</option>
+            <option value="West India">West India</option>
+            <option value="East India">East India</option>
+        </select>
+
+        <h3 id="regionDisplay">No region selected</h3>
+    </div>
 
     <!-- Moisture -->
     <div class="metric">
@@ -64,6 +84,17 @@
     </p>
 
     <script>
+        function updateRegion() {
+            let region = document.getElementById("regionSelect").value;
+            let display = document.getElementById("regionDisplay");
+
+            if(region === "") {
+                display.innerText = "No region selected";
+            } else {
+                display.innerText = "Selected Region: " + region;
+            }
+        }
+
         // Moisture Chart
         new Chart(document.getElementById("moistureChart"), {
             type: 'line',
